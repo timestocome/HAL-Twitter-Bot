@@ -26,6 +26,10 @@ import markovify
 
 # https://github.com/tweepy/tweepy
 import tweepy
+from tweepy.streaming import StreamListener
+from tweepy import OAuthHandler
+from tweepy import Stream
+
 
 # http://stackoverflow.com/questions/26965624/cant-import-requests-oauthlib
 import requests
@@ -72,11 +76,12 @@ for i in range(20):
         if len(s) <=140:        # too long for twitter
             sentences.append(s)
 
+'''
 # test to see if it's working
 print(len(sentences))
 for i in sentences:
     print(i)
-
+'''
 
 
 
@@ -98,13 +103,13 @@ class Bot:
         tweet = ''
         
         tweet = sentences[randint(0, len(sentences)-1)]
-        print("tweet", tweet)
+        #print("tweet", tweet)
 
         return tweet
 
 
 
-    def run(self):
+    def push_tweet(self):
 
         while True:
             try:
@@ -116,6 +121,11 @@ class Bot:
                 self._twitter_api.disconnect()
 
             time.sleep(self.sleep_timer) #Every 10 minutes
+
+
+   
+  
+        
 
 
 
@@ -159,6 +169,23 @@ class Twitter_Api():
         self._logger.info(stat)
 
 
+
+    # will use this to collect, cleanup and store tweets
+    # markov chain will then be built from these instead of Alice
+    def get_popular(self):
+        if self._authorization is None:
+            self._login()
+            pass
+
+        api = tweepy.API(self._authorization)
+
+        tweets = tweepy.Cursor(api.search, q="saturday", result_type='popular').items()
+        for t in tweets:
+            tweet = t.text
+            print(tweet.encode('utf-8'))
+
+
+
     def disconnect(self):
         self._authorization = None
 
@@ -177,4 +204,7 @@ class Twitter_Api():
 twitter_api = Twitter_Api()
 bot = Bot(twitter_api)
 
-bot.run()
+#bot.push_tweet()
+
+# get stream
+twitter_api.get_popular()
