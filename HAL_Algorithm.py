@@ -179,11 +179,17 @@ class Twitter_Api():
 
         api = tweepy.API(self._authorization)
 
+        new_tweets = []
         tweets = tweepy.Cursor(api.search, q="saturday", result_type='popular').items()
         for t in tweets:
             tweet = t.text
             print(tweet.encode('utf-8'))
+            new_tweets.append(tweet.encode('utf-8'))
 
+        with open('collected_tweets.txt', 'a') as myfile:
+            for t in new_tweets:
+                myfile.write(str(t)+"\n")
+                
 
 
     def disconnect(self):
