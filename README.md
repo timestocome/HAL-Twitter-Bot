@@ -1,7 +1,7 @@
 # Trend__seeker bot
 WIP - create a Twitter bot to engage and interact with humans
 
-* temporarily on hold until the politics dies down on Twitter. All the tweets I'm collecting are about the idiot in chief
+* temporarily on hold until the politics die down on Twitter. In the meantime I'm saving all the wordclouds and data to do some machine learning on later.
 
 
 To run in the background on OSX:
